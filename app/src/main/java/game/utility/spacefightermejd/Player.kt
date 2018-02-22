@@ -3,6 +3,7 @@ package game.utility.spacefightermejd
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Rect
 import android.util.Log
 
 /**
@@ -24,6 +25,9 @@ class Player(context: Context, screenWidth:Int , screenHeight:Int) {
     private val MIN_SPEED = 1
     private val MAX_SPEED = 20
 
+
+    var detectCollision : Rect? = null
+
     init {
         x = 75
         y = 50
@@ -32,6 +36,9 @@ class Player(context: Context, screenWidth:Int , screenHeight:Int) {
 
         maxY = screenHeight - bitmap!!.height
         minY = 0
+
+        detectCollision = Rect(x,y,bitmap!!.width,bitmap!!.height)
+
     }
 
     public fun update() {
@@ -46,6 +53,11 @@ class Player(context: Context, screenWidth:Int , screenHeight:Int) {
         if (y>maxY) y=maxY
 
         //Log.d("spacefightermejd","booting:" + boosting + " speed:"+ speed +" y:"+ y  )
+
+        detectCollision?.left = x
+        detectCollision?.top = y
+        detectCollision?.right = x + bitmap!!.width
+        detectCollision?.bottom = y + bitmap!!.height
 
     }
 }

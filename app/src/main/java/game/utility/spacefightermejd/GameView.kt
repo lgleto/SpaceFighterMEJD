@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
+import android.graphics.Rect
 import android.os.Handler
 import android.util.Log
 import android.view.MotionEvent
@@ -21,6 +22,8 @@ class GameView: SurfaceView , Runnable {
 
     var player: Player? = null
     var stars : MutableList<Star> = ArrayList<Star>()
+    var enemies : MutableList<Enemy> = ArrayList<Enemy>()
+    var boom: Boom? = null
 
     var paint: Paint? =null
     var canvas: Canvas? =null
@@ -44,6 +47,12 @@ class GameView: SurfaceView , Runnable {
             stars.add(s)
         }
 
+        for (i in 0..2){
+            val e = Enemy(context, screenWidth, screenHeight)
+            enemies.add(e)
+        }
+
+        boom = Boom(context, screenWidth, screenHeight)
     }
 
     override fun run() {
@@ -56,9 +65,26 @@ class GameView: SurfaceView , Runnable {
 
     private fun update(){
         player?.update()
+
+        boom?.x = -250
+        boom?.y = -250
+
         for (s in stars ){
             s.update(player!!.speed)
         }
+        for (e in enemies ){
+            e.update(player!!.speed)
+
+            if (Rect.intersects(player?.detectCollision,e.detectCollision)){
+
+                boom?.x=e.x
+                boom?.y=e.y
+
+                e.x = -200
+            }
+        }
+
+
     }
 
     private fun draw(){
@@ -74,6 +100,13 @@ class GameView: SurfaceView , Runnable {
                 canvas?.drawPoint( s.x.toFloat(), s.y.toFloat(), paint)
             }
 
+            for (e in enemies ){
+                canvas?.drawBitmap(e?.bitmap, e?.x!!.toFloat(),e?.y!!.toFloat(),paint)
+
+            }
+
+
+            canvas?.drawBitmap(boom?.bitmap, boom?.x!!.toFloat(),boom?.y!!.toFloat(),paint)
 
             canvas?.drawBitmap(player?.bitmap, player?.x!!.toFloat(),player?.y!!.toFloat(),paint)
 
