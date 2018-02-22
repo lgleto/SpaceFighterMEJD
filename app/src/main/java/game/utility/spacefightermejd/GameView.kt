@@ -5,6 +5,7 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.os.Handler
+import android.util.Log
 import android.view.MotionEvent
 import android.view.SurfaceHolder
 import android.view.SurfaceView
@@ -35,6 +36,9 @@ class GameView: SurfaceView , Runnable {
         player= Player(context, screenWidth, screenHeight)
         surfaceHolder=holder
         paint= Paint()
+
+
+        Log.d("spacefightermejd","helloconsr" )
 
     }
 
@@ -77,11 +81,20 @@ class GameView: SurfaceView , Runnable {
     }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
+        //Log.d("spacefightermejd","helloconsr" +event.toString())
         when (event?.action!!.and(MotionEvent.ACTION_MASK)){
-            MotionEvent.ACTION_UP -> player?.boosting = false
-            MotionEvent.ACTION_DOWN -> player?.boosting = true
+
+            MotionEvent.ACTION_UP -> {
+                Log.d("spacefightermejd","ACTION_UP")
+                player?.boosting = false
+            }
+            MotionEvent.ACTION_DOWN -> {
+                Log.d("spacefightermejd","ACTION_DOWN")
+                player?.boosting = true
+            }
             else ->{
-                print("hello")
+
+                //Log.d("spacefightermejd","helloconsr" +event.toString())
             }
         }
         return true

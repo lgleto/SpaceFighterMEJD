@@ -3,6 +3,7 @@ package game.utility.spacefightermejd
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.util.Log
 
 /**
  * Created by lourencogomes on 10/02/18.
@@ -34,15 +35,17 @@ class Player(context: Context, screenWidth:Int , screenHeight:Int) {
     }
 
     public fun update() {
-        if (boosting)speed += 2
+        if (boosting) speed += 2
         else speed -= 5
         if (speed > MAX_SPEED) speed=MAX_SPEED
-        if (speed > MIN_SPEED) speed=MIN_SPEED
+        if (speed < MIN_SPEED) speed=MIN_SPEED
 
         y -= speed + GRAVITY
 
         if (y<minY) y=minY
         if (y>maxY) y=maxY
+
+        //Log.d("spacefightermejd","booting:" + boosting + " speed:"+ speed +" y:"+ y  )
 
     }
 }
